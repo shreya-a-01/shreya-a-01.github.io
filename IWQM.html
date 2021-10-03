@@ -1,0 +1,41 @@
+<html>
+<head>
+<body>
+<section class="header">
+<h1>Intelligent Water Quality Monitoring</h1>
+<p>Temperature:<span id="Temperature"></span></br>
+Humidity:<span id="Humidity"></span></br>
+Turbidity Voltage:<span id="TurbidityVoltage"></span></br>
+Turbidity NTU:<span id="TurbidityNTU"></span></p>
+<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/1518856/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/1518856/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/1518856/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/1518856/charts/4?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+<script>
+const TurbidityValue=600;
+const api_url='https://api.thingspeak.com/channels/1518856/feeds/last.json?'
+async function getISS()
+{
+	const response= await fetch(api_url);
+	const data= await response.json();
+	var Temperature=data.field1;
+	console.log("Temperature:"+Temperature);
+	var Humidity=data.field2;
+	console.log("Humidity:"+Humidity);
+	var TurbidityVoltage=data.field3;
+	console.log("Turbidity Voltage:"+TurbidityVoltage);
+	var TurbidityNTU=data.field4;
+	console.log("Turbidity NTU:"+TurbidityNTU);
+    if(TurbidityNTU<TurbidityValue)
+	   console.log("Water Quality is Good");
+    else
+	   console.log("Water Quality is Bad");
+	document.getElementById('Temperature').textContent=Temperature;
+	document.getElementById('Humidity').textContent=Humidity;
+	document.getElementById('TurbidityVoltage').textContent=TurbidityVoltage;
+	document.getElementById('TurbidityNTU').textContent=TurbidityNTU;
+}
+getISS();
+</script>
+</body>
+</html>
